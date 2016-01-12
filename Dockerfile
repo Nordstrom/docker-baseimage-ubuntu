@@ -1,4 +1,4 @@
-FROM ubuntu-debootstrap:14.04.3
+FROM ubuntu-debootstrap:15.10
 MAINTAINER Innovation Platform Team "invcldtm@nordstrom.com"
 
 # I copied this from the docker/registry:2.2.0 image's history
