@@ -13,3 +13,6 @@ RUN apt-get update -qy \
  && apt-get install -qy \
       apt-transport-https \
       ca-certificates
+
+RUN useradd --create-home --shell /bin/bash ubuntu
+USER ubuntu
