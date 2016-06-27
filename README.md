@@ -1,2 +1,3 @@
 # docker-baseimage-ubuntu
-Nordstrom's Ubuntu deboostrap-based Docker baseimage
+
+Nordstrom's Ubuntu Docker baseimage.

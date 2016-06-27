@@ -13,3 +13,4 @@ tag/image: build/image
 
 push/image: tag/image
 	docker push $(container_registry)/$(container_name):$(container_release)
+
