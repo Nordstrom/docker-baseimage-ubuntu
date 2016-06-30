@@ -16,3 +16,4 @@ RUN apt-get update -qy \
 
 RUN useradd --create-home --shell /bin/bash ubuntu
 USER ubuntu
+WORKDIR /home/ubuntu
