@@ -1,20 +1,7 @@
-FROM docker.io/library/ubuntu:16.04
+# this is docker.io/library/ubuntu:16.04 minus some packages we don't need
+FROM scratch
 MAINTAINER Store Modernization Platform Team "invcldtm@nordstrom.com"
 
-RUN echo 'APT::Post-Invoke { "rm -f /var/lib/apt/lists/* /tmp/* /var/tmp/* || true"; };' > /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Clean "always";' >> /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/baseimage-clean
+ADD rootfs.tar /
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update -qy \
- && apt-get upgrade -qy \
- && apt-get install -qy \
-      apt-transport-https \
-      ca-certificates \
-      curl
-
-RUN useradd --create-home --shell /bin/bash ubuntu
-USER ubuntu
-WORKDIR /home/ubuntu
+CMD ["/bin/bash"]

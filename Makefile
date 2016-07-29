@@ -1,10 +1,19 @@
 container_name := baseimage-ubuntu
 container_registry := quay.io/nordstrom
 container_release := 16.04
+build_image ?= baseimage-ubuntu-build
+tar_file ?= rootfs.tar
 
-.PHONY: build/image tag/image push/image
+.PHONY: build/build-image build/image tag/image push/image
 
-build/image:
+build/build-image: Dockerfile.build $(build_container_prereqs)
+	rm -f $(tar_file)
+	docker build -t $(build_image) -f Dockerfile.build .
+	docker create --name $(build_image) $(build_image)
+	docker export $(build_image) > $(tar_file)
+	docker rm $(build_image)
+
+build/image: Dockerfile build/build-image $(build_container_prereqs)
 	docker build -t $(container_name) .
 
 tag/image: build/image
