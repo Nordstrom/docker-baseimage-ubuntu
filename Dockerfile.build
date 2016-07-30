@@ -34,7 +34,6 @@ RUN apt-get clean -y && \
     gzip copyrights.tar && \
     rm -rf \
         doc \
-        man \
         info \
         locale \
         /var/lib/apt/lists/* \
