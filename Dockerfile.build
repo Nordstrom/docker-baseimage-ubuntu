@@ -4,8 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY excludes /etc/dpkg/dpkg.cfg.d/excludes
 
-RUN apt-get update \
-    && apt-get dist-upgrade -y
+RUN apt-get update -qy \
+ && apt-get dist-upgrade -qy
 
 COPY runlevel /sbin/runlevel
 
@@ -20,7 +20,7 @@ RUN echo "Yes, do as I say!" | apt-get purge \
     libudev1 \
     tzdata
 
-RUN apt-get autoremove -y
+RUN apt-get autoremove -qy
 
 # RUN sed -i 's/bash/sh/g' /etc/passwd
 
@@ -28,11 +28,11 @@ WORKDIR /usr/share
 
 RUN tar -czf copyrights.tar.gz common-licenses doc/*/copyright
 
-RUN apt-get clean -y && \
-    gunzip copyrights.tar.gz && \
-    tar -rf copyrights.tar doc/*/copyright && \
-    gzip copyrights.tar && \
-    rm -rf \
+RUN apt-get clean -qy \
+ && gunzip copyrights.tar.gz \
+ && tar -rf copyrights.tar doc/*/copyright \
+ && gzip copyrights.tar \
+ && rm -rf \
         doc \
         info \
         locale \
@@ -47,7 +47,6 @@ RUN apt-get clean -y && \
         /usr/lib/x86_64-linux-gnu/gconv/IBM* \
         /usr/lib/x86_64-linux-gnu/gconv/EBC*
 
-
 RUN echo 'APT::Post-Invoke { "rm -f /var/lib/apt/lists/* /tmp/* /var/tmp/* || true"; };' > /etc/apt/apt.conf.d/baseimage-clean \
  && echo 'APT::Clean "always";' >> /etc/apt/apt.conf.d/baseimage-clean \
  && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/baseimage-clean \
@@ -55,7 +54,7 @@ RUN echo 'APT::Post-Invoke { "rm -f /var/lib/apt/lists/* /tmp/* /var/tmp/* || tr
 
 RUN apt-get update -qy \
  && apt-get upgrade -qy \
- && apt-get install -qy \
+ && apt-get install -qyf \
       apt-transport-https \
       ca-certificates \
       curl
