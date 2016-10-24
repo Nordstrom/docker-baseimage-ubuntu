@@ -59,6 +59,10 @@ RUN apt-get update -qy \
       ca-certificates \
       curl
 
+# add nordstrom ca ca-certificates
+COPY certs/ /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
 RUN useradd --create-home --shell /bin/bash ubuntu
 USER ubuntu
 WORKDIR /home/ubuntu
