@@ -1,6 +1,6 @@
 image_name := baseimage-ubuntu
 image_registry := quay.io/nordstrom
-image_release := 16.04-nordcas
+image_release := 16.04
 build_image ?= baseimage-ubuntu-build
 tar_file ?= rootfs.tar
 proxy_url := http://webproxysea.nordstrom.net:8181
