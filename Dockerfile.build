@@ -60,7 +60,7 @@ RUN apt-get update -qy \
       curl
 
 # add nordstrom ca ca-certificates
-COPY certs/ /usr/local/share/ca-certificates/
+COPY nord-ca-certs/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
 RUN useradd --create-home --shell /bin/bash ubuntu
