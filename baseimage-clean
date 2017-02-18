@@ -1,0 +1,4 @@
+APT::Post-Invoke { "rm -f /var/lib/apt/lists/* /tmp/* /var/tmp/* || true"; };
+APT::Clean "always";
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";

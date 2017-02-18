@@ -1,4 +1,5 @@
 FROM ubuntu:16.04
+MAINTAINER Nordstrom Kubernetes Platform Team "techk8s@nordstrom.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -47,19 +48,13 @@ RUN apt-get clean -qy \
         /usr/lib/x86_64-linux-gnu/gconv/IBM* \
         /usr/lib/x86_64-linux-gnu/gconv/EBC*
 
-RUN echo 'APT::Post-Invoke { "rm -f /var/lib/apt/lists/* /tmp/* /var/tmp/* || true"; };' > /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Clean "always";' >> /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/baseimage-clean \
- && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/baseimage-clean
+COPY baseimage-clean /etc/apt/apt.conf.d/baseimage-clean
 
-RUN apt-get update -qy \
- && apt-get upgrade -qy \
- && apt-get install -qyf \
+RUN apt-get install -qyf \
       apt-transport-https \
       ca-certificates \
       curl
 
-# add nordstrom ca ca-certificates
 COPY nord-ca-certs/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
