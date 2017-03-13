@@ -50,13 +50,12 @@ RUN apt-get clean -qy \
 
 COPY baseimage-clean /etc/apt/apt.conf.d/baseimage-clean
 
-RUN apt-get install -qyf \
-      apt-transport-https \
-      ca-certificates \
-      curl
+RUN apt-get update -qy && apt-get install -qyf \
+  apt-transport-https \
+  ca-certificates \
+  curl
 
-COPY nord-ca-certs/ /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+COPY nord-ca-certs/ /etc/ssl/nord-ca-certificates/
 
 RUN useradd --create-home --shell /bin/bash ubuntu
 USER ubuntu
