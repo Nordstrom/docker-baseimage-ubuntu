@@ -1,8 +1,8 @@
 image_name := baseimage-ubuntu
 image_registry := quay.io/nordstrom
-image_release := 16.04
+image_release := 17.04
 from_image_name := docker.io/library/ubuntu
-from_image_tag := 16.04
+from_image_tag := 17.04
 build_image_name := $(image_name)-build
 
 ifdef http_proxy
