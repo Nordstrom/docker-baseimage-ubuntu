@@ -64,7 +64,7 @@ RUN apt-get install -qyf \
   ca-certificates \
   curl
 
-COPY nord-ca-certs/ /etc/ssl/nord-ca-certificates/
+COPY nordstrom-ca-certs/ /etc/ssl/nordstrom-ca-certificates/
 
 RUN useradd --create-home --shell /bin/bash ubuntu
 USER ubuntu
