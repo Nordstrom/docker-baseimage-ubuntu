@@ -1,44 +1,50 @@
-image_name := baseimage-ubuntu
-image_registry := quay.io/nordstrom
-image_release := 16.04
-from_image_name := docker.io/library/ubuntu
-from_image_tag := 16.04
-build_image_name := $(image_name)-build
+IMAGE_NAME := baseimage-ubuntu
+IMAGE_REGISTRY := quay.io/nordstrom
+IMAGE_TAG := 16.04
+FROM_IMAGE_NAME := docker.io/library/ubuntu
+FROM_IMAGE_TAG := 16.04
+BUILD_IMAGE_NAME := $(IMAGE_NAME)-build-temp
 
 ifdef http_proxy
-build_args := --build-arg http_proxy=$(http_proxy)
-build_args += --build-arg https_proxy=$(http_proxy)
+BUILD_ARGS += --build-arg http_proxy=$(http_proxy)
+BUILD_ARGS += --build-arg https_proxy=$(http_proxy)
 endif
 
-.PHONY: build/build-image build/image tag/image push/image
-
+.PHONY: push/image
 push/image: tag/image
-	docker push $(image_registry)/$(image_name):$(image_release)
+	docker push $(IMAGE_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 
+.PHONY: tag/image
 tag/image: build/image
-	docker tag $(image_name) $(image_registry)/$(image_name):$(image_release)
+	docker tag $(IMAGE_NAME) $(IMAGE_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 
+.PHONY: build/image
 build/image: build/rootfs.tar
-	docker build -t $(image_name) $(build_args) .
+	docker build -t $(IMAGE_NAME) $(BUILD_ARGS) .
 
+build/rootfs.tar: build/build_image clean/build_container | build
+	docker create --name $(BUILD_IMAGE_NAME) $(BUILD_IMAGE_NAME)
+	docker export $(BUILD_IMAGE_NAME) > "$@"
 
-build/rootfs.tar: Dockerfile.build | build
-	docker pull $(from_image_name):$(from_image_tag)
-	docker build -t $(build_image_name) $(build_args) -f Dockerfile.build .
-	docker create --name $(build_image_name) $(build_image_name)
-	docker export $(build_image_name) > "$@"
+build/build_image: Dockerfile.build | build
+	docker pull $(FROM_IMAGE_NAME):$(FROM_IMAGE_TAG)
+	docker build -t $(BUILD_IMAGE_NAME) $(BUILD_ARGS) -f "$<" .
 
 build:
 	mkdir -p $@
 
+.PHONY: clean/built_image
 clean/built_image:
-	-docker rmi $(image_name)
+	-docker rmi $(IMAGE_NAME)
 
+.PHONY: clean/build_image
 clean/build_image:
-	-docker rmi $(build_image_name)
+	-docker rmi $(BUILD_IMAGE_NAME)
 
+.PHONY: clean/build_container
 clean/build_container:
-	-docker rm $(build_image_name)
+	-docker rm $(BUILD_IMAGE_NAME)
 
+.PHONY: clean
 clean: clean/build_container clean/built_image clean/build_image
 	rm -rf build
