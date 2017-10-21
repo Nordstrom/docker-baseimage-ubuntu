@@ -2,6 +2,6 @@
 FROM scratch
 MAINTAINER Nordstrom Kubernetes Platform Team "techk8s@nordstrom.com"
 
-ADD rootfs.tar /
+ADD build/rootfs.tar /
 
 CMD ["/bin/bash"]

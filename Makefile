@@ -18,11 +18,9 @@ push/image: tag/image
 tag/image: build/image
 	docker tag $(image_name) $(image_registry)/$(image_name):$(image_release)
 
-build/image: build/Dockerfile build/rootfs.tar
-	docker build -t $(image_name) $(build_args) -f "$<" build
+build/image: build/rootfs.tar
+	docker build -t $(image_name) $(build_args) .
 
-build/Dockerfile: Dockerfile | build
-	cp $< $@
 
 build/rootfs.tar: Dockerfile.build | build
 	docker pull $(from_image_name):$(from_image_tag)
