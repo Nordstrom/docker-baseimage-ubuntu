@@ -70,5 +70,3 @@ COPY nordstrom-ca-certs/ /etc/ssl/nordstrom-ca-certs/
 RUN cd /etc/ssl && ln -s nordstrom-ca-certs nord-ca-certs
 
 RUN useradd --create-home --shell /bin/bash nordstrom
-USER nordstrom
-WORKDIR /
