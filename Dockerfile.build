@@ -64,6 +64,8 @@ RUN apt-get install -qyf \
   ca-certificates \
   curl
 
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* || true
+
 COPY nordstrom-ca-certs/ /etc/ssl/nordstrom-ca-certs/
 RUN cd /etc/ssl && ln -s nordstrom-ca-certs nord-ca-certs
 
