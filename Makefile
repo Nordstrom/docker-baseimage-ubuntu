@@ -1,8 +1,8 @@
 IMAGE_NAME := baseimage-ubuntu
 IMAGE_REGISTRY := quay.io/nordstrom
-IMAGE_TAG := 16.04
-FROM_IMAGE_NAME := docker.io/library/ubuntu
-FROM_IMAGE_TAG := 16.04
+IMAGE_TAG := 18.04
+# FROM_IMAGE_NAME := docker.io/library/ubuntu
+# FROM_IMAGE_TAG := 18.04
 BUILD_IMAGE_NAME := $(IMAGE_NAME)-build-temp
 
 ifdef http_proxy
@@ -27,7 +27,7 @@ build/rootfs.tar: build/build_image clean/build_container | build
 	docker export $(BUILD_IMAGE_NAME) > "$@"
 
 build/build_image: Dockerfile.build | build
-	docker pull $(FROM_IMAGE_NAME):$(FROM_IMAGE_TAG)
+	# docker pull $(FROM_IMAGE_NAME):$(FROM_IMAGE_TAG)
 	docker build -t $(BUILD_IMAGE_NAME) $(BUILD_ARGS) -f "$<" .
 
 build:
