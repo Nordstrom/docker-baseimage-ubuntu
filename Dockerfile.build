@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -10,25 +10,19 @@ RUN apt-get update \
 # no-op script removes the need for systemd-sysv
 COPY runlevel /sbin/runlevel
 
+# TODO: Commented lines as I was not able to get it to qwortk with 18.04
 # hold required packages to avoid breaking the installation of packages
-RUN apt-mark hold apt gnupg adduser passwd libsemanage1
+# RUN apt-mark hold apt gnupg adduser passwd libsemanage1
+# RUN echo "Yes, do as I say!" | apt-get purge \
+#    e2fslibs \
+#    libmount1 \
+#    libncursesw5 \
+#    libsmartcols1 \
+#    libudev1 \
+#    ncurses-base \
+#    ncurses-bin \
+#    libsystemd0
 
-# dpkg --get-selections | grep -v deinstall
-RUN echo "Yes, do as I say!" | apt-get purge \
-    e2fslibs \
-    libcap2-bin \
-    libkmod2 \
-    libmount1 \
-    libncursesw5 \
-    libprocps4 \
-    libsmartcols1 \
-    libudev1 \
-    ncurses-base \
-    ncurses-bin \
-    locales \
-    tzdata \
-    systemd \
-    libsystemd0
 
 # cleanup
 RUN apt-get autoremove -y && \
@@ -48,11 +42,11 @@ RUN apt-get autoremove -y && \
         /lib/lsb \
         /lib/udev \
         /usr/lib/x86_64-linux-gnu/gconv/IBM* \
-        /usr/lib/x86_64-linux-gnu/gconv/EBC* && \
-    mkdir -p /usr/share/man/man1 /usr/share/man/man2 \
-        /usr/share/man/man3 /usr/share/man/man4 \
-        /usr/share/man/man5 /usr/share/man/man6 \
-        /usr/share/man/man7 /usr/share/man/man8
+        /usr/lib/x86_64-linux-gnu/gconv/EBC* \
+        /usr/share/man/* \
+        /tmp/* \
+        /var/tmp/*
+
 
 COPY baseimage-clean /etc/apt/apt.conf.d/baseimage-clean
 
