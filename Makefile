@@ -1,5 +1,5 @@
 IMAGE_NAME := baseimage-ubuntu
-IMAGE_REGISTRY := quay.io/nordstrom
+IMAGE_REGISTRY := artifactory.nordstrom.com/docker/app00738
 IMAGE_TAG := 18.04
 # FROM_IMAGE_NAME := docker.io/library/ubuntu
 # FROM_IMAGE_TAG := 18.04
